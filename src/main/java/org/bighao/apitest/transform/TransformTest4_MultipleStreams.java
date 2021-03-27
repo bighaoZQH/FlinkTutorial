@@ -1,4 +1,4 @@
-package org.bighao.apitest.Transform;
+package org.bighao.apitest.transform;
 
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.java.tuple.Tuple2;
@@ -135,9 +135,9 @@ public class TransformTest4_MultipleStreams {
 
 
     /**
-     * split-select 已经过时
+     * split-select 已经过时 flink1.12 已经没有此方法
      */
-    @Test
+    /*@Test
     public void test01 () throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
@@ -168,6 +168,6 @@ public class TransformTest4_MultipleStreams {
         lowStream.print("low");
         allStream.print("all");
         env.execute();
-    }
+    }*/
 
 }
