@@ -1,4 +1,4 @@
-package org.bighao.apitest.Transform;
+package org.bighao.apitest.transform;
 
 import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.FlatMapFunction;
@@ -21,7 +21,7 @@ public class TransformTest1_Base {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
 
-        DataStream<String> inputStream = env.readTextFile("E:\\code\\java_code\\learn_something\\FlinkTutorial\\src\\main\\resources\\senso.txt");
+        DataStream<String> inputStream = env.readTextFile(System.getProperty("user.dir") + "\\src\\main\\resources\\senso.txt");
 
         // 1.map操作 将String转换成长度输出
         DataStream<Integer> mapStream = inputStream.map(new MapFunction<String, Integer>() {

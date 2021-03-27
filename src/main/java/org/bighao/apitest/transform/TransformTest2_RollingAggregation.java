@@ -1,4 +1,4 @@
-package org.bighao.apitest.Transform;
+package org.bighao.apitest.transform;
 
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.KeyedStream;
@@ -20,7 +20,7 @@ public class TransformTest2_RollingAggregation {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
 
-        DataStream<String> inputStream = env.readTextFile("E:\\code\\java_code\\learn_something\\FlinkTutorial\\src\\main\\resources\\senso.txt");
+        DataStream<String> inputStream = env.readTextFile(System.getProperty("user.dir") + "\\src\\main\\resources\\senso.txt");
 
         // 1.转换成SensorReading类型
         DataStream<SensorReading> dataStream = inputStream.map(line -> {

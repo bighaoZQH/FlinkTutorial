@@ -1,11 +1,7 @@
 package org.bighao.apitest.source;
 
 import org.apache.flink.streaming.api.datastream.DataStream;
-import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.bighao.apitest.source.beans.SensorReading;
-
-import java.util.Arrays;
 
 /**
  * @version 1.0
