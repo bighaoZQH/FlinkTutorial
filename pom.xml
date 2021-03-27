@@ -11,12 +11,26 @@
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
-        <!--<flink.version>1.12.1</flink.version>-->
-        <flink.version>1.10.1</flink.version>
+        <flink.version>1.12.1</flink.version>
+        <!--<flink.version>1.10.1</flink.version>-->
         <scala.binary.version>2.12</scala.binary.version>
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.12</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.2</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- Flink -->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-java</artifactId>
@@ -42,17 +56,31 @@
             <version>${flink.version}</version>
         </dependency>
 
+        <!-- flink -> redis -->
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.12</version>
+            <groupId>org.apache.bahir</groupId>
+            <artifactId>flink-connector-redis_2.11</artifactId>
+            <version>1.0</version>
         </dependency>
+
+        <!-- flink -> elasticsearch -->
+        <!--<dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-connector-elasticsearch6_2.12</artifactId>
+            <version>1.10.1</version>
+        </dependency>-->
+
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.8.2</version>
-            <scope>compile</scope>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-connector-elasticsearch7_2.12</artifactId>
+            <version>1.12.1</version>
         </dependency>
+
+        <!--<dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-connector-elasticsearch7_2.12</artifactId>
+            <version>1.10.1</version>
+        </dependency>-->
 
     </dependencies>
 
