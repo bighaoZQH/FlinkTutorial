@@ -1,5 +1,6 @@
 package org.bighao.apitest.sink;
 
+import jdk.nashorn.internal.ir.RuntimeNode;
 import org.apache.flink.api.common.functions.RuntimeContext;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -13,9 +14,14 @@ import org.apache.flink.streaming.connectors.redis.common.mapper.RedisCommandDes
 import org.apache.flink.streaming.connectors.redis.common.mapper.RedisMapper;
 import org.apache.http.HttpHost;
 import org.bighao.apitest.source.beans.SensorReading;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.client.Request;
+import org.elasticsearch.client.Requests;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @version 1.0
@@ -26,7 +32,7 @@ public class SinkTest3_ES {
 
     /**
      * 往redis发送数据
-     *
+     * <p>
      * 模拟将各个传感器的最新温度放入redis缓存
      */
     public static void main(String[] args) throws Exception {
@@ -48,33 +54,25 @@ public class SinkTest3_ES {
         env.execute();
     }
 
-    // 自定义redis操作mapper
-    private static class MyRedisMapper implements RedisMapper<SensorReading> {
-        // 定义保存数据到redis的命令，存成hash,hset sensor_temp key-id value-temperature
-        @Override
-        public RedisCommandDescription getCommandDescription() {
-            return new RedisCommandDescription(RedisCommand.HSET, "sensor_temp");
-        }
-
-        // 获取数据的key
-        @Override
-        public String getKeyFromData(SensorReading sensorReading) {
-            return sensorReading.getId();
-        }
-
-        // 获取数据的value
-        @Override
-        public String getValueFromData(SensorReading sensorReading) {
-            return sensorReading.getTemperature().toString();
-        }
-
-    }
-
     // 自定义的ES写入操作的ElasticsearchSinkFunction
     private static class MyEsSinkFunction implements ElasticsearchSinkFunction<SensorReading> {
         @Override
-        public void process(SensorReading sensorReading, RuntimeContext runtimeContext, RequestIndexer requestIndexer) {
+        public void process(SensorReading element, RuntimeContext runtimeContext, RequestIndexer requestIndexer) {
+            // 定义写入的数据source
+            Map<String, String> dataSource = new HashMap<>();
+            dataSource.put("id", element.getId());
+            dataSource.put("temp", element.getTemperature().toString());
+            dataSource.put("ts", element.getTimestamp().toString());
 
+            // 创建请求，作为向es发起的写入命令
+            IndexRequest indexRequest = Requests.indexRequest()
+                    .index("sensor")
+                    // ES7统一type就是_doc，不再允许指定type
+                    //.type("readingdata")
+                    .source(dataSource);
+
+            // 用index发送请求
+            requestIndexer.add(indexRequest);
         }
     }
 }
